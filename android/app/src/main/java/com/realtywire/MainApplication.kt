@@ -1,4 +1,4 @@
-package com.legacyprorealtors
+package com.realtywire
 
 import android.app.Application
 import com.facebook.react.PackageList

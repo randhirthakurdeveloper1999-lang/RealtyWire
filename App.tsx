@@ -1,45 +1,36 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { StatusBar, StyleSheet, Text, View } from 'react-native'
+import React from 'react'
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import Navigations from './src/navigation/Navigations';
+import { FavouriteProvider } from './src/context/FavouriteContext';
+import COLORS from './src/utils/Colors';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
-
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
+const AppTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: '#F5F6FA', // 👈 GLOBAL BACKGROUND
+  },
 }
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
+export default function App() {
   return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
+    <FavouriteProvider>
+      <View style={styles.app}>
+        <StatusBar
+          backgroundColor={COLORS.background}
+          barStyle="dark-content"
+        />
+        <NavigationContainer>
+          <Navigations />
+        </NavigationContainer>
+      </View>
+    </FavouriteProvider>
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  app: {
     flex: 1,
+    backgroundColor: COLORS.background,
   },
-});
-
-export default App;
+})
