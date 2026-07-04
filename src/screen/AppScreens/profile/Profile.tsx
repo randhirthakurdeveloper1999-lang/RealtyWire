@@ -193,10 +193,6 @@ export default function Profile() {
 
       {/* FIXED LOGOUT */}
       <View style={styles.bottomArea}>
-        <TouchableOpacity style={styles.logoutBtn}>
-          <Ionicons name="log-out-outline" size={20} color="red" />
-          <Text style={styles.logoutText}>Sign Out</Text>
-        </TouchableOpacity>
         {/* 🔥 DELETE ACCOUNT */}
         <TouchableOpacity
           style={[styles.logoutBtn, { marginTop: 10 }]}

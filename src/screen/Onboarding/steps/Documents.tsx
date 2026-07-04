@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,86 +8,89 @@ import {
   Image,
   Modal,
   TextInput,
-} from 'react-native'
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
-import COLORS from '../../../utils/Colors'
+} from 'react-native';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import COLORS from '../../../utils/Colors';
 
 export default function Documents({ setDocValid, setDocData }: any) {
-  const [selected, setSelected] = useState<'rera' | 'gst' | 'visiting'>('rera')
-  const [files, setFiles] = useState<{ visiting?: any }>({})
-  const [previewVisible, setPreviewVisible] = useState(false)
-  const [rera, setRera] = useState('')
-  const [gst, setGst] = useState('')
+  const [selected, setSelected] = useState<'rera' | 'gst' | 'visiting'>('rera');
+  const [files, setFiles] = useState<{ visiting?: any }>({});
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [rera, setRera] = useState('');
+  const [gst, setGst] = useState('');
 
   const saveFile = (file: any) => {
     setFiles((prev: any) => ({
       ...prev,
       visiting: file,
-    }))
-  }
+    }));
+  };
 
   const openCamera = async () => {
-    const result = await launchCamera({ mediaType: 'photo' })
+    const result = await launchCamera({ mediaType: 'photo' });
     if (!result.didCancel && result.assets?.length) {
-      saveFile(result.assets[0])
+      saveFile(result.assets[0]);
     }
-  }
+  };
 
   const openGallery = async () => {
-    const result = await launchImageLibrary({ mediaType: 'photo' })
+    const result = await launchImageLibrary({ mediaType: 'photo' });
     if (!result.didCancel && result.assets?.length) {
-      saveFile(result.assets[0])
+      saveFile(result.assets[0]);
     }
-  }
+  };
 
   const openPicker = () => {
     Alert.alert('Upload Visiting Card', 'Choose option', [
       { text: 'Camera', onPress: openCamera },
       { text: 'Gallery', onPress: openGallery },
       { text: 'Cancel', style: 'cancel' },
-    ])
-  }
+    ]);
+  };
 
   const removeFile = () => {
     setFiles((prev: any) => ({
       ...prev,
       visiting: null,
-    }))
-  }
-
+    }));
+  };
 
   const ToggleBtn = ({ label, value }: any) => (
-    <TouchableOpacity
+  <TouchableOpacity
+    style={[
+      styles.toggle,
+      selected === value && styles.toggleActive,
+    ]}
+    onPress={() => {
+      if (selected !== value) {
+        setSelected(value);
+        setRera('');
+        setGst('');
+        setFiles({});
+      }
+    }}
+  >
+    <Text
+      numberOfLines={1}
+      adjustsFontSizeToFit
+      minimumFontScale={0.75}
+      allowFontScaling={false}
       style={[
-        styles.toggle,
-        selected === value && styles.toggleActive,
+        styles.toggleText,
+        selected === value && styles.toggleTextActive,
       ]}
-      onPress={() => {
-        if (selected !== value) {
-          setSelected(value)
-          setRera('')
-          setGst('')
-          setFiles({})
-        }
-      }}
     >
-      <Text
-        style={[
-          styles.toggleText,
-          selected === value && styles.toggleTextActive,
-        ]}
-      >
-        {label}
-      </Text>
-    </TouchableOpacity>
-  )
+      {label}
+    </Text>
+  </TouchableOpacity>
+);
 
-  const visitingFile = files['visiting']
+  const visitingFile = files['visiting'];
 
   const isValid =
     (selected === 'visiting' && !!visitingFile) ||
     (selected === 'gst' && gst.length > 0) ||
-    (selected === 'rera' && rera.length > 0)
+    (selected === 'rera' && rera.length > 0);
 
   React.useEffect(() => {
     setDocData({
@@ -95,19 +98,19 @@ export default function Documents({ setDocValid, setDocData }: any) {
       rera,
       visitingFile,
       selected,
-    })
-  }, [gst, rera, files, selected])
+    });
+  }, [gst, rera, files, selected]);
 
   React.useEffect(() => {
-    setDocValid(isValid)
-  }, [isValid])
+    setDocValid(isValid);
+  }, [isValid]);
 
   return (
     <View style={styles.container}>
       <View style={styles.mainCard}>
         <Text style={styles.infoText}>
-          Please provide any ONE document:
-          RERA Number / GST Number / Visiting Card
+          Please provide any ONE document: RERA Number / GST Number / Visiting
+          Card
         </Text>
         <View style={styles.toggleRow}>
           <ToggleBtn label="RERA" value="rera" />
@@ -119,22 +122,19 @@ export default function Documents({ setDocValid, setDocData }: any) {
           <TextInput
             placeholder="Enter RERA number"
             value={rera}
-            onChangeText={(text) => setRera(text.toUpperCase())}
+            onChangeText={text => setRera(text.toUpperCase())}
             style={styles.input}
           />
-
         )}
 
         {selected === 'gst' && (
           <TextInput
             placeholder="Enter GST number"
             value={gst}
-            onChangeText={(text) => setGst(text.toUpperCase())}
+            onChangeText={text => setGst(text.toUpperCase())}
             style={styles.input}
           />
-
         )}
-
 
         {selected === 'visiting' && (
           <>
@@ -194,7 +194,7 @@ export default function Documents({ setDocValid, setDocData }: any) {
         )}
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -203,20 +203,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  mainCard: {
-    width: '100%',
-    maxWidth: 420,
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    shadowColor: '#000',
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 3,
-  },
+mainCard: {
+  width: '92%',
+  maxWidth: 420,
+  alignSelf: 'center',
+  backgroundColor: '#fff',
+  borderRadius: 16,
+  padding: 16,
+  borderWidth: 1,
+  borderColor: '#E2E8F0',
+  shadowColor: '#000',
+  shadowOpacity: 0.08,
+  shadowRadius: 10,
+  shadowOffset: { width: 0, height: 4 },
+  elevation: 3,
+},
 
   infoText: {
     fontSize: 13,
@@ -224,27 +225,38 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 12,
   },
-  
-  toggleRow: {
-    flexDirection: 'row',
-    marginBottom: 20,
-    justifyContent: 'center',
-    gap: 6,
-  },
-  toggle: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-    minWidth: 100,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
+
+toggleRow: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  marginBottom: 20,
+},
+
+toggle: {
+  flex: 1,
+  height: 56,
+  marginHorizontal: 4,
+  borderRadius: 12,
+  borderWidth: 1,
+  borderColor: '#E2E8F0',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: '#fff',
+},
+
+toggleText: {
+  fontSize: 15,
+  fontWeight: '600',
+  textAlign: 'center',
+  color: '#0F172A',
+  paddingHorizontal: 6,
+  flexShrink: 1,
+},
   toggleActive: {
     backgroundColor: COLORS.primary,
   },
-  toggleText: { fontWeight: '600', color: '#0F172A' },
+
   toggleTextActive: { color: '#fff' },
 
   input: {
@@ -318,5 +330,4 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
   },
-
-})
+});
